@@ -1,10 +1,10 @@
-module.exports = function (context, req) {
-    context.log('JavaScript HTTP trigger function processed a request.');
-
+"use strict";
+function main(context, req) {
+    var res;
     if (req.query.name || (req.body && req.body.name)) {
         res = {
             // status: 200, /* Defaults to 200 */
-            body: " Hello " + (req.query.name || req.body.name) + "!"
+            body: "[weather-1] Hello " + (req.query.name || req.body.name)
         };
     }
     else {
@@ -14,4 +14,6 @@ module.exports = function (context, req) {
         };
     }
     context.done(null, res);
-};
+}
+exports.main = main;
+;
