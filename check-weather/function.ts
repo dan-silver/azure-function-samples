@@ -5,7 +5,7 @@ export function main (context, req) {
     getWeatherForecast(req.query.city).then((weatherData) => {
         let response = {
             status: 200, // optional, defaults to 200
-            body: JSON.stringify(weatherData)
+            body: weatherData
         };
         context.done(null, response);
     }).catch((error) => {
@@ -18,10 +18,11 @@ export function main (context, req) {
     })
 };
 
-function getWeatherForecast(cityName:string):Promise<any> {
+async function getWeatherForecast(cityName:string):Promise<any> {
     if (typeof cityName === "undefined") {
         return Promise.reject("city not passed");
     }
 
-    return fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${cityName}&mode=json&APPID=${OpenWeatherMapAppId}`);
+    let rawRes = await fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${cityName}&mode=json&APPID=${OpenWeatherMapAppId}`);
+    return await rawRes.json();
 }
