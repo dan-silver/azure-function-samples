@@ -1,3 +1,5 @@
+import { appId } from './secrets'
+
 export function main (context, req) {
     let res;
 
@@ -15,3 +17,11 @@ export function main (context, req) {
     }
     context.done(null, res);
 };
+
+function getWeatherForecast(cityName:string):Promise<any> {
+    if (typeof cityName === "undefined") {
+        return Promise.reject("city not passed");
+    }
+
+    return fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${cityName}&mode=json&APPID=${appId}`);
+}
