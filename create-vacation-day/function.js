@@ -1,7 +1,7 @@
 "use strict";
 function main(context, req) {
     context.log('JavaScript HTTP trigger function processed a request.');
-    var res;
+    let res;
     if (req.query.name || (req.body && req.body.name)) {
         res = {
             // status: 200, /* Defaults to 200 */
