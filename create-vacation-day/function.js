@@ -13,18 +13,13 @@ function main(context, req) {
     return __awaiter(this, void 0, void 0, function* () {
         const isNiceWeatherDay = yield isNiceWeather("seattle");
         // if (isNiceWeather) {
-        tellCoworkers().then(() => {
-            console.log(true);
-        }).catch((e) => {
-            console.log(false, e);
-        });
+        tellCoworkers();
         // }
         let response = {
             status: 200,
             body: isNiceWeatherDay
         };
         return response;
-        // context.done(null, response);
     });
 }
 exports.main = main;
@@ -43,16 +38,13 @@ function tellCoworkers() {
         let coworkerEmails = yield client.api("/me/people").version("beta").get().then((response) => {
             return response.value.map((p) => { return { emailAddress: { address: p.emailAddresses[0].address } }; });
         });
-        console.log(coworkerEmails);
-        client.api("/me/sendMail")
+        return client.api("/me/sendMail")
             .post({ message: {
                 subject: "I'm out today, nice weather!",
                 toRecipients: coworkerEmails,
                 body: {
                     content: "Isn't the weather nice?"
                 }
-            } }, (err, res, rawRes) => {
-            console.log("err", err);
-        });
+            } });
     });
 }
