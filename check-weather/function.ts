@@ -1,11 +1,11 @@
-import { OpenWeatherMapAppId } from '../secrets'
-import fetch from 'node-fetch';
+// import { OpenWeatherMapAppId } from '../secrets'
+// import fetch from 'node-fetch';
 
 export function main (context, req) {
     console.log('a1')
 
     context.done(null, {body:{a:1}});
-return;
+// return;
     // getWeatherForecast(req.query.city).then((weatherData) => {
     //     console.log('a2')
     //     let response = {
@@ -25,12 +25,12 @@ return;
     // })
 };
 
-async function getWeatherForecast(cityName:string):Promise<any> {
-    if (typeof cityName === "undefined") {
-        return Promise.reject("city not passed");
-    }
+// async function getWeatherForecast(cityName:string):Promise<any> {
+//     if (typeof cityName === "undefined") {
+//         return Promise.reject("city not passed");
+//     }
 
-    let rawRes = await fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${cityName}&units=metric&mode=json&APPID=${OpenWeatherMapAppId}`);
-    let weatherObj =  await rawRes.json();
-    return weatherObj.list[0];
-}
+//     let rawRes = await fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${cityName}&units=metric&mode=json&APPID=${OpenWeatherMapAppId}`);
+//     let weatherObj =  await rawRes.json();
+//     return weatherObj.list[0];
+// }
