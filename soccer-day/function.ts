@@ -1,12 +1,15 @@
+import { Url, parse } from 'url'
 import { OpenWeatherMapAppId } from '../secrets'
 import fetch from 'node-fetch';
 import { GraphClient } from '../authHelpers';
 
 export async function main (context, req) {
-    const isNiceWeatherDay = await isNiceWeather("seattle");
-    // if (isNiceWeather) {
+    let requestUrl = parse(req.originalUrl);
+
+    const isNiceWeatherDay = await isNiceWeather(requestUrl, "seattle");
+    if (isNiceWeather) {
         tellCoworkers();
-    // }
+    }
     let response = {
         status: 200, // optional, defaults to 200
         body: isNiceWeatherDay
@@ -14,8 +17,8 @@ export async function main (context, req) {
     return response;
 };
 
-async function isNiceWeather(city:string) {
-    const weatherRawResponse = await fetch(`/api/check-weather?city=${city}`);
+async function isNiceWeather(requestUrl:Url, city:string) {
+    const weatherRawResponse = await fetch(`${requestUrl.protocol}//${requestUrl.host}/api/check-weather?city=${city}`);
     const weatherData = await weatherRawResponse.json();
 
     const temp = weatherData.main.temp;

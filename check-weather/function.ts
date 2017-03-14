@@ -7,6 +7,7 @@ export function main (context, req) {
             status: 200, // optional, defaults to 200
             body: weatherData
         };
+
         return context.done(null, response);
     }).catch((error) => {
 
