@@ -17,7 +17,7 @@ export function main (context, req) {
 
         context.done(null, {
             status: 500,
-            body: {error}
+            body: {error1: error}
         });
     })
 };
