@@ -15,7 +15,7 @@ export async function main (context, req) {
 };
 
 async function isNiceWeather(city:string) {
-    const weatherRawResponse = await fetch(`http://localhost:7071/api/check-weather?city=${city}`);
+    const weatherRawResponse = await fetch(`/api/check-weather?city=${city}`);
     const weatherData = await weatherRawResponse.json();
 
     const temp = weatherData.main.temp;
@@ -25,16 +25,19 @@ async function isNiceWeather(city:string) {
 async function tellCoworkers() {
     const client = await GraphClient();
 
-    let coworkerEmails = await client.api("/me/people").version("beta").get().then((response) => {
-        return response.value.map((p) => { return {emailAddress: {address:p.emailAddresses[0].address}}})
+    // get the email addresses of the people I interact with the most across email, files, shared notes, etc.
+    const coworkerEmails = await client.api("/me/people").version("beta").get().then((res) => {
+        return res.value.map((p) => { return {emailAddress: {address:p.emailAddresses[0].address}}})
     });
 
-    return client.api("/me/sendMail")
-        .post({message: {
-            subject: "I'm out today, nice weather!",
+    // email that list of people
+    return client.api("/me/sendMail").post({
+        message: {
+            subject: "Soccer after work today?",
             toRecipients: coworkerEmails,
             body: {
-                content: "Isn't the weather nice?"
+                content: "Soccer after work today? The weather is great!"
             }
-        }});
+        }
+    });
 }

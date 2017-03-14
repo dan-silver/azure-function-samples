@@ -2,9 +2,7 @@ import { OpenWeatherMapAppId } from '../secrets'
 import fetch from 'node-fetch';
 
 export function main (context, req) {
-    console.log("a0")
     getWeatherForecast(req.query.city).then((weatherData) => {
-        console.log("a1")
         let response = {
             status: 200, // optional, defaults to 200
             body: weatherData
