@@ -1,4 +1,4 @@
-import { OpenWeatherMapAppId } from './secrets'
+import { OpenWeatherMapAppId } from '../secrets'
 import fetch from 'node-fetch';
 
 export function main (context, req) {
@@ -23,6 +23,7 @@ async function getWeatherForecast(cityName:string):Promise<any> {
         return Promise.reject("city not passed");
     }
 
-    let rawRes = await fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${cityName}&mode=json&APPID=${OpenWeatherMapAppId}`);
-    return await rawRes.json();
+    let rawRes = await fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${cityName}&units=metric&mode=json&APPID=${OpenWeatherMapAppId}`);
+    let weatherObj =  await rawRes.json();
+    return weatherObj.list[0];
 }

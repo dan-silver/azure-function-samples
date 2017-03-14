@@ -1,1 +1,0 @@
-export const OpenWeatherMapAppId = process.env["OpenWeatherMapAppId"]

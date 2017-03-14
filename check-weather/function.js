@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const secrets_1 = require("./secrets");
+const secrets_1 = require("../secrets");
 const node_fetch_1 = require("node-fetch");
 function main(context, req) {
     getWeatherForecast(req.query.city).then((weatherData) => {
@@ -31,7 +31,8 @@ function getWeatherForecast(cityName) {
         if (typeof cityName === "undefined") {
             return Promise.reject("city not passed");
         }
-        let rawRes = yield node_fetch_1.default(`http://api.openweathermap.org/data/2.5/forecast?q=${cityName}&mode=json&APPID=${secrets_1.OpenWeatherMapAppId}`);
-        return yield rawRes.json();
+        let rawRes = yield node_fetch_1.default(`http://api.openweathermap.org/data/2.5/forecast?q=${cityName}&units=metric&mode=json&APPID=${secrets_1.OpenWeatherMapAppId}`);
+        let weatherObj = yield rawRes.json();
+        return weatherObj.list[0];
     });
 }

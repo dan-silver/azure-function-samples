@@ -18,6 +18,7 @@
   "homepage": "https://github.com/dan-silver/azure-function-samples#readme",
   "dependencies": {
     "node-fetch": "^1.6.3",
-    "typescript": "^2.2.1"
+    "typescript": "^2.2.1",
+    "@microsoft/microsoft-graph-client": "^0.3.2"
   }
 }
