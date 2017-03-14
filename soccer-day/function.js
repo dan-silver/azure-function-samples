@@ -12,8 +12,9 @@ const node_fetch_1 = require("node-fetch");
 const authHelpers_1 = require("../authHelpers");
 function main(context, req) {
     return __awaiter(this, void 0, void 0, function* () {
+        context.log("starting soccer-day function!");
         let requestUrl = url_1.parse(req.originalUrl);
-        const isNiceWeatherDay = yield isNiceWeather(requestUrl, "seattle");
+        const isNiceWeatherDay = yield isNiceWeather(context, requestUrl, "seattle");
         if (isNiceWeather) {
             tellCoworkers();
         }
@@ -26,9 +27,11 @@ function main(context, req) {
 }
 exports.main = main;
 ;
-function isNiceWeather(requestUrl, city) {
+function isNiceWeather(context, requestUrl, city) {
     return __awaiter(this, void 0, void 0, function* () {
-        const weatherRawResponse = yield node_fetch_1.default(`${requestUrl.protocol}//${requestUrl.host}/api/check-weather?city=${city}`);
+        const weatherFunctionUrl = `${requestUrl.protocol}//${requestUrl.host}/api/check-weather?city=${city}`;
+        context.log("weatherFunctionUrl", weatherFunctionUrl);
+        const weatherRawResponse = yield node_fetch_1.default(weatherFunctionUrl);
         const weatherData = yield weatherRawResponse.json();
         const temp = weatherData.main.temp;
         return temp > 31 && temp < 33; // (88 to 92 deg)

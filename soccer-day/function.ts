@@ -4,9 +4,10 @@ import fetch from 'node-fetch';
 import { GraphClient } from '../authHelpers';
 
 export async function main (context, req) {
+    context.log("starting soccer-day function!");
     let requestUrl = parse(req.originalUrl);
 
-    const isNiceWeatherDay = await isNiceWeather(requestUrl, "seattle");
+    const isNiceWeatherDay = await isNiceWeather(context, requestUrl, "seattle");
     if (isNiceWeather) {
         tellCoworkers();
     }
@@ -17,8 +18,10 @@ export async function main (context, req) {
     return response;
 };
 
-async function isNiceWeather(requestUrl:Url, city:string) {
-    const weatherRawResponse = await fetch(`${requestUrl.protocol}//${requestUrl.host}/api/check-weather?city=${city}`);
+async function isNiceWeather(context, requestUrl:Url, city:string) {
+    const weatherFunctionUrl = `${requestUrl.protocol}//${requestUrl.host}/api/check-weather?city=${city}`;
+    context.log("weatherFunctionUrl", weatherFunctionUrl);
+    const weatherRawResponse = await fetch(weatherFunctionUrl);
     const weatherData = await weatherRawResponse.json();
 
     const temp = weatherData.main.temp;
