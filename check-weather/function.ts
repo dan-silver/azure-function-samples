@@ -3,23 +3,26 @@ import fetch from 'node-fetch';
 
 export function main (context, req) {
     console.log('a1')
-    getWeatherForecast(req.query.city).then((weatherData) => {
-        console.log('a2')
-        let response = {
-            status: 200, // optional, defaults to 200
-            body: weatherData
-        };
-        context.done(null, response);
-    }).catch((error) => {
-        console.log('a3')
 
-        // try passing error as first param
+    context.done(null, {body:{a:1}});
+return;
+    // getWeatherForecast(req.query.city).then((weatherData) => {
+    //     console.log('a2')
+    //     let response = {
+    //         status: 200, // optional, defaults to 200
+    //         body: weatherData
+    //     };
+    //     context.done(null, response);
+    // }).catch((error) => {
+    //     console.log('a3')
 
-        context.done(null, {
-            status: 500,
-            body: {error1: error}
-        });
-    })
+    //     // try passing error as first param
+
+    //     context.done(null, {
+    //         status: 500,
+    //         body: {error1: error}
+    //     });
+    // })
 };
 
 async function getWeatherForecast(cityName:string):Promise<any> {
