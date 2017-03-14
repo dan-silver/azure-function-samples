@@ -8,6 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 const url_1 = require("url");
+const secrets_1 = require("../secrets");
 const node_fetch_1 = require("node-fetch");
 const authHelpers_1 = require("../authHelpers");
 function main(context, req) {
@@ -29,7 +30,7 @@ exports.main = main;
 ;
 function isNiceWeather(context, requestUrl, city) {
     return __awaiter(this, void 0, void 0, function* () {
-        const weatherFunctionUrl = `${requestUrl.protocol}//${requestUrl.host}/api/check-weather?city=${city}`;
+        const weatherFunctionUrl = `${requestUrl.protocol}//${requestUrl.host}/api/check-weather?city=${city}&code=${secrets_1.CheckWeatherAppKey}`;
         context.log("weatherFunctionUrl", weatherFunctionUrl);
         const weatherRawResponse = yield node_fetch_1.default(weatherFunctionUrl);
         const weatherData = yield weatherRawResponse.json();

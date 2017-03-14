@@ -1,5 +1,5 @@
 import { Url, parse } from 'url'
-import { OpenWeatherMapAppId } from '../secrets'
+import { OpenWeatherMapAppId, CheckWeatherAppKey } from '../secrets'
 import fetch from 'node-fetch';
 import { GraphClient } from '../authHelpers';
 
@@ -19,7 +19,7 @@ export async function main (context, req) {
 };
 
 async function isNiceWeather(context, requestUrl:Url, city:string) {
-    const weatherFunctionUrl = `${requestUrl.protocol}//${requestUrl.host}/api/check-weather?city=${city}`;
+    const weatherFunctionUrl = `${requestUrl.protocol}//${requestUrl.host}/api/check-weather?city=${city}&code=${CheckWeatherAppKey}`;
     context.log("weatherFunctionUrl", weatherFunctionUrl);
     const weatherRawResponse = await fetch(weatherFunctionUrl);
     const weatherData = await weatherRawResponse.json();
