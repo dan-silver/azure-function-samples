@@ -15,12 +15,12 @@ function main(context, req) {
             status: 200,
             body: weatherData
         };
-        context.done(null, response);
+        return context.done(null, response);
     }).catch((error) => {
         // try passing error as first param
         context.done(null, {
             status: 500,
-            body: { error1: error }
+            body: { error: JSON.stringify(error) }
         });
     });
 }

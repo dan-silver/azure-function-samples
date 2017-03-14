@@ -26,7 +26,7 @@ exports.main = main;
 ;
 function isNiceWeather(city) {
     return __awaiter(this, void 0, void 0, function* () {
-        const weatherRawResponse = yield node_fetch_1.default(`http://localhost:7071/api/check-weather?city=${city}`);
+        const weatherRawResponse = yield node_fetch_1.default(`/api/check-weather?city=${city}`);
         const weatherData = yield weatherRawResponse.json();
         const temp = weatherData.main.temp;
         return temp > 31 && temp < 33; // (88 to 92 deg)
@@ -35,16 +35,19 @@ function isNiceWeather(city) {
 function tellCoworkers() {
     return __awaiter(this, void 0, void 0, function* () {
         const client = yield authHelpers_1.GraphClient();
-        let coworkerEmails = yield client.api("/me/people").version("beta").get().then((response) => {
-            return response.value.map((p) => { return { emailAddress: { address: p.emailAddresses[0].address } }; });
+        // get the email addresses of the people I interact with the most across email, files, shared notes, etc.
+        const coworkerEmails = yield client.api("/me/people").version("beta").get().then((res) => {
+            return res.value.map((p) => { return { emailAddress: { address: p.emailAddresses[0].address } }; });
         });
-        return client.api("/me/sendMail")
-            .post({ message: {
-                subject: "I'm out today, nice weather!",
+        // email that list of people
+        return client.api("/me/sendMail").post({
+            message: {
+                subject: "Soccer after work today?",
                 toRecipients: coworkerEmails,
                 body: {
-                    content: "Isn't the weather nice?"
+                    content: "Soccer after work today? The weather is great!"
                 }
-            } });
+            }
+        });
     });
 }
