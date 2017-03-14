@@ -14,7 +14,7 @@ export function main (context, req) {
 
         context.done(null, {
             status: 500,
-            body: {error1: error}
+            body: {error1: JSON.stringify(error)}
         });
     })
 };
