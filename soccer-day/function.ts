@@ -8,12 +8,19 @@ export async function main (context, req) {
     let requestUrl = parse(req.originalUrl);
 
     const isNiceWeatherDay = await isNiceWeather(context, requestUrl, "seattle");
+
+    let coworkerEmails;
     if (isNiceWeather) {
-        tellCoworkers();
+        
+        coworkerEmails = await getCoworkers();
+        tellCoworkers(coworkerEmails);
     }
     let response = {
         status: 200, // optional, defaults to 200
-        body: isNiceWeatherDay
+        body: {
+            coworkerEmails,
+            isNiceWeatherDay
+        }
     };
     return response;
 };
@@ -28,13 +35,18 @@ async function isNiceWeather(context, requestUrl:Url, city:string) {
     return temp > 31 && temp < 33 // (88 to 92 deg)
 }
 
-async function tellCoworkers() {
+
+async function getCoworkers() {
     const client = await GraphClient();
 
     // get the email addresses of the people I interact with the most across email, files, shared notes, etc.
-    const coworkerEmails = await client.api("/me/people").version("beta").get().then((res) => {
+    return await client.api("/me/people").version("beta").get().then((res) => {
         return res.value.map((p) => { return {emailAddress: {address:p.emailAddresses[0].address}}})
     });
+}
+
+async function tellCoworkers(coworkerEmails) {
+    const client = await GraphClient();
 
     // email that list of people
     return client.api("/me/sendMail").post({
